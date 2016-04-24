@@ -8,3 +8,5 @@ target
 /RUNNING_PID
 public/app/dist
 public/app/node_modules
+project/target
+project/project/target
