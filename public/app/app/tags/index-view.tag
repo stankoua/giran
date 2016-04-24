@@ -9,7 +9,7 @@ require('./search-results.tag')
                     <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-btn">
-                                <input id="searchTerm" type="text" class="form-control" placeholder="Search for ..." />
+                                <input id="searchTerm" name="searchTerm" type="text" class="form-control" placeholder="Search for ..." />
                                 <button type="submit" class="btn btn-default">Go!</button>
                             </span>
                         </div>
@@ -19,7 +19,7 @@ require('./search-results.tag')
         </div>
     </div>
 
-    <search-results results={searchResults} store={store} />
+    <search-results results={searchResults} store={this.opts.store} q={searchTerm.value} />
 
     <script type="es6">
         // import searchFor from '../actions/search'
@@ -29,7 +29,7 @@ require('./search-results.tag')
         this.searchResults = opts.store.getState().search
         this.searchRepo = () => {
           const searchTerm = document.getElementById('searchTerm').value
-          dispatch(searchFor(searchTerm))
+          dispatch(searchFor(searchTerm, 1))
         }
         this.on('update', () => {
             console.log(this.searchResults);

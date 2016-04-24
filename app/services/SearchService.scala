@@ -15,7 +15,7 @@ object SearchService {
   import play.api.libs.functional.syntax._
   import models.SearchResults._
 
-  case class Search(id: Long, repo: String)
+  case class Search(id: Long, repo: String, page: Int)
 
   case class SearchResults(id: Long, results: Results)
 
@@ -44,11 +44,11 @@ class SearchService(ws: WSClient) extends Actor with Client with ActorLogging {
   }
 
   def receive = LoggingReceive {
-    case Search(id, repo) => {
+    case Search(id, repo, page) => {
       pendingRequests += (id -> sender())
       val getter = context.actorOf(SearchGetter.props(ws), "search-getter-actor-" + nextId())
       context.watch(getter)
-      getter ! StartSearch(id, repo)
+      getter ! StartSearch(id, repo, page)
     }
     case SearchDone(id, repo, results) => {
       println("========================================>>>>>>>>>>> SearchService")

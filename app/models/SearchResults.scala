@@ -1,6 +1,6 @@
 package models
 
-case class SearchResults(total: Int, items: List[Repo])
+case class SearchResults(total: Int, page: Int, items: List[Repo])
 
 object SearchResults {
 
@@ -11,11 +11,13 @@ object SearchResults {
 
   implicit val modelSearchResultsWrites: Writes[SearchResults] = (
     (JsPath \ "total").write[Int] and
+    (JsPath \ "page").write[Int] and
     (JsPath \ "items").write[List[Repo]]
   ) (unlift(SearchResults.unapply))
 
   implicit val modelSearchResultsReads: Reads[SearchResults] = (
     (__ \ "total_count").read[Int] and
+    (__ \ "page").read[Int] and
     (__ \ "items").read[List[Repo]]
   ) (SearchResults.apply _)
 

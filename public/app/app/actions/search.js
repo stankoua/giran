@@ -10,9 +10,9 @@ export function searchDataResults(data) {
   }
 }
 
-export function searchFor(searchTerm) {
+export function searchFor(searchTerm, page) {
   return function(dispatch) {
-    const url = '/search?q=' + searchTerm
+    const url = '/search?q=' + searchTerm + '&page=' + page
     fetch(url, {
         method: 'get',
         headers: {
@@ -21,13 +21,11 @@ export function searchFor(searchTerm) {
         }
       })
       .then((response) => {
-        // response.json().then((r) => console.log(r))
         return response.json()
       })
       .then((data) => {
         console.log(data);
         dispatch(searchDataResults(data))
       })
-      // .catch((error) => dispatch(searchDataActionCreator(response.data)))
   }
 }

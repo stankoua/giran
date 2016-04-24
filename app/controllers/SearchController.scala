@@ -28,8 +28,8 @@ class SearchController @Inject()(system: ActorSystem, ws: WSClient) extends Cont
 
   val searchService = system.actorOf(SearchService.props(ws), "search-service")
 
-  def search(q: String) = Action.async {
-    (searchService ? Search(nextId(), q)).mapTo[SearchResults].map { searchResults =>
+  def search(q: String, page: Int) = Action.async {
+    (searchService ? Search(nextId(), q, page)).mapTo[SearchResults].map { searchResults =>
       Ok(Json.toJson(searchResults.results)).as(ContentTypes.JSON)
     }
   }
