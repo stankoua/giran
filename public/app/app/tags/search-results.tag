@@ -6,7 +6,7 @@
                 <p if={!canDisplayResults}>Aucun résultat</p>
                 <ul class="list-group" if={canDisplayResults}>
                     <li class="list-group-item" each="{item in opts.results.items}">
-                        <a href="/repo/{item.fullName}">{item.fullName}</a>
+                        <a href="/repos/{item.fullName}">{item.fullName}</a>
                         <!-- <span class="label label-info">{item.language}</span> -->
                         <span class="label label-default">{item.forks} forks</span>
                         <span class="label label-success">{item.watchers} watchers</span>
@@ -26,7 +26,8 @@
 
 
   <script type="es6">
-  var searchFor = require('../actions/search').searchFor
+  // import searchFor from '../actions/search'
+  let searchFor = require('../actions/search').searchFor
   const {dispatch} = this.opts.store
   let launchSearch = (page) => {
     dispatch(searchFor(this.opts.q, page))
@@ -40,6 +41,9 @@
       this.canNext = this.canDisplayResults && ((this.opts.results.items.length * this.opts.results.page) <= this.opts.results.total)
       console.log(this.canDisplayResults);
       console.log("===========>>>>>> results: ", this.opts.results);
+  })
+  this.on('unmount', () => {
+    console.log("=================>> search results unmount");
   })
   </script>
 

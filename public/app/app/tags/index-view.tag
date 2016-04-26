@@ -18,12 +18,13 @@ require('./search-results.tag')
             </div>
         </div>
     </div>
+    <a href="/repos/stankoua/g">cliquez ici</a>
 
     <search-results results={searchResults} store={this.opts.store} q={searchTerm.value} />
 
     <script type="es6">
         // import searchFor from '../actions/search'
-        var searchFor = require('../actions/search').searchFor
+        let searchFor = require('../actions/search').searchFor
         const {dispatch} = this.opts.store
 
         this.searchResults = opts.store.getState().search
@@ -31,12 +32,13 @@ require('./search-results.tag')
           const searchTerm = document.getElementById('searchTerm').value
           dispatch(searchFor(searchTerm, 1))
         }
+        let unsubscribe = opts.store.subscribe(() => {
+          this.update({searchResults: opts.store.getState().search})
+        })
         this.on('update', () => {
             console.log(this.searchResults);
         })
-        opts.store.subscribe(() => {
-          this.update({searchResults: opts.store.getState().search})
-        })
+        this.on('unmount', () => unsubscribe())
     </script>
 
 </index-view>

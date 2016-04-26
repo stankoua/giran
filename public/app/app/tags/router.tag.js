@@ -4,27 +4,25 @@ import Promise from 'es6-promise'
 import fetch from 'isomorphic-fetch'
 
 import './index-view.tag'
+import './repo-view.tag'
 
 let current_tag = undefined
 
 riot.tag('router', '', function(opts) {
 
-    const {dispatch} = opts.store
-    let unsubscribe = () => undefined
+  riot.route.base('/');
+  const r = riot.route.create();
+  r('/',              home       )
+  r('/repos/*/*',     repo       )
+  r(                  home       )
 
-    riot.route.base('/');
-    const r = riot.route.create();
-    r('/',              home       )
+  function home() {
+    current_tag = riot.mount('#app', 'index-view', {store: opts.store, searchResults: {}})[0]
+  }
 
-    riot.route(function() {
-      unsubscribe()
-      unsubscribe = () => undefined
-    });
-
-    function home() {
-      current_tag = riot.mount('#app', 'index-view', {store: opts.store, searchResults: {}})[0]
-    }
-
+  function repo(owner, name) {
+    current_tag = riot.mount('#app', 'repo-view', {store: opts.store, ...owner, ...name, repo: {}})[0]
+  }
 
 });
 
