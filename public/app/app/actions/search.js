@@ -1,5 +1,4 @@
-import fetch from 'isomorphic-fetch'
-// import Promise from 'es6-promise'
+import getAndDispatch from '../common/fetcher'
 
 export const SEARCH_DATA = 'SEARCH_DATA'
 
@@ -11,21 +10,5 @@ export function searchDataResults(data) {
 }
 
 export function searchFor(searchTerm, page) {
-  return function(dispatch) {
-    const url = '/search?q=' + searchTerm + '&page=' + page
-    fetch(url, {
-        method: 'get',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      })
-      .then((response) => {
-        return response.json()
-      })
-      .then((data) => {
-        console.log(data);
-        dispatch(searchDataResults(data))
-      })
-  }
+  return getAndDispatch(dispatch, '/search?q=' + searchTerm + '&page=' + page, searchDataResults)
 }

@@ -3,16 +3,19 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           controllers.HomeController.index
+GET     /                                   controllers.HomeController.index
 # An example controller showing how to use dependency injection
-GET     /count                      controllers.CountController.count
+GET     /count                              controllers.CountController.count
 # An example controller showing how to write asynchronous code
-GET     /message                    controllers.AsyncController.message
-# Search controller
-GET     /search                     controllers.SearchController.search(q: String, page: Int ?= 1)
-# Repo controller
-GET     /repos/:owner/:name          controllers.RepoController.getRepo(owner: String, name: String)
-
+GET     /message                            controllers.AsyncController.message
+# Search for repositories
+GET     /search                             controllers.SearchController.search(q: String, page: Int ?= 1)
+# Get repository informations
+GET     /repos/:owner/:name                 controllers.RepoController.getRepo(owner: String, name: String)
+# Get committers for a repo
+GET     /repos/:owner/:name/committers      controllers.RepoController.getCommitters(owner: String, name: String)
+# Get last commits
+# GET     /repos/:owner/:name/commits         controllers.RepoController.getLastCommits(owner: String, name: String, max: Int ?= 100)
 
 
 # Map static resources from the /public folder to the /assets URL path

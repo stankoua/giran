@@ -4,6 +4,10 @@ require('./search-results.tag')
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
+                <h1>Welcome to Github Repo ANalyser</h1>
+                <p>
+                    This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.
+                </p>
                 <p>Use search box below to find a repo</p>
                 <form novalidate="true" onSubmit={searchRepo}>
                     <div class="col-md-3">
@@ -18,7 +22,6 @@ require('./search-results.tag')
             </div>
         </div>
     </div>
-    <a href="/repos/stankoua/g">cliquez ici</a>
 
     <search-results results={searchResults} store={this.opts.store} q={searchTerm.value} />
 

@@ -21,7 +21,7 @@ riot.tag('router', '', function(opts) {
   }
 
   function repo(owner, name) {
-    current_tag = riot.mount('#app', 'repo-view', {store: opts.store, ...owner, ...name, repo: {}})[0]
+    current_tag = riot.mount('#app', 'repo-view', {store: opts.store, owner: owner, name: name, repo: {}})[0]
   }
 
 });

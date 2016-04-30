@@ -24,7 +24,7 @@ class RepoGetter(ws: WSClient) extends Actor with ActorLogging {
 
   implicit val defaultContext = play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-  def url(owner: String, name: String) = s"/repos/$owner/$name"
+  def url(owner: String, name: String) = s"https://api.github.com/repos/$owner/$name"
 
   def receive = active
 

@@ -3,7 +3,7 @@ package services
 import play.api.libs.ws.WSClient
 import akka.actor.{Actor, Props, ActorRef, Terminated, ActorLogging}
 import akka.event.LoggingReceive
-import models.Repo
+import models.{Repo, User}
 import common.Client
 
 
@@ -15,6 +15,10 @@ object RepoService {
   case class GetRepo(id: Long, owner: String, name: String)
 
   case class RepoResult(id: Long, result: Repo)
+
+  case class GetRepoCommitters(id: Long, owner: String, name: String)
+
+  case class RepoCommittersResults(id: Long, committers: List[User])
 
   def props(ws: WSClient) = Props(classOf[RepoService], ws)
 
@@ -28,9 +32,10 @@ object RepoService {
 
 class RepoService(ws: WSClient) extends Actor with Client with ActorLogging {
 
-  import getters.RepoGetter
+  import getters.{RepoGetter, RepoCommittersGetter}
+  import services.RepoService.{GetRepo, RepoResult, GetRepoCommitters, RepoCommittersResults}
   import getters.RepoGetter.{FetchRepo, RepoFetchResults}
-  import services.RepoService.{GetRepo, RepoResult}
+  import getters.RepoCommittersGetter.{FetchCommitters, CommittersFetched}
 
   var pendingRequests: Map[Long, ActorRef] = Map.empty
 
@@ -44,11 +49,22 @@ class RepoService(ws: WSClient) extends Actor with Client with ActorLogging {
     case RepoFetchResults(id, result) => {
       val requester = pendingRequests(id)
       requester ! RepoResult(id, result)
+      pendingRequests -= id
       context.stop(sender())
     }
-    case Terminated(child) => {
-
+    case GetRepoCommitters(id, owner, name) => {
+      val getter = context.actorOf(RepoCommittersGetter.props(ws), "repo-committers-getter-actor" + nextId())
+      context.watch(getter)
+      getter ! FetchCommitters(id, owner, name)
+      pendingRequests += (id -> sender())
     }
+    case CommittersFetched(id, committers) => {
+      val requester = pendingRequests(id)
+      requester ! RepoCommittersResults(id, committers)
+      pendingRequests -= id
+      context.stop(sender())
+    }
+    case Terminated(child) => {}
     case _ => ()
   }
 
