@@ -1,13 +1,14 @@
 
 <repo-commits>
 
+    <h2>Commits</h2>
     <div id="timeline"></div>
     <!--<rg-chart chart="{ linechart }"></rg-chart>-->
 
     <script type="es6">
     // import _ from 'lodash'
     this.on('update', () => {
-        console.log(this.opts);
+        // console.log(this.opts);
     })
     // const testData = [
     //     {times: [{"starting_time": 1355752800000, "display": "circle"},

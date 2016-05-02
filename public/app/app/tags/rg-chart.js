@@ -32,7 +32,12 @@ var drawChart = function drawChart() {
   let options = {
         xAxes: [{
             display: false
-        }]
+        }],
+        yAxes: [{
+           ticks: {
+               beginAtZero:true
+           }
+       }]
     };
 
   var c = null;
