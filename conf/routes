@@ -15,7 +15,7 @@ GET     /repos/:owner/:name                 controllers.RepoController.getRepo(o
 # Get committers for a repo
 GET     /repos/:owner/:name/committers      controllers.RepoController.getCommitters(owner: String, name: String)
 # Get last commits
-# GET     /repos/:owner/:name/commits         controllers.RepoController.getLastCommits(owner: String, name: String, max: Int ?= 100)
+GET     /repos/:owner/:name/commits         controllers.RepoController.getCommits(owner: String, name: String, page: Int ?= 1)
 
 
 # Map static resources from the /public folder to the /assets URL path

@@ -4,6 +4,7 @@ import akka.actor.{Actor, Props}
 import akka.pattern.pipe
 import play.api.libs.ws.WSClient
 import scala.concurrent.duration._
+// import play.api.libs.ws.WSAuthScheme.BASIC
 
 import models.User
 

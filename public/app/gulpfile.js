@@ -20,7 +20,10 @@ var options = {
     'app/less/**/*.less'
   ],
   VENDORS: [
-    // 'app/vendors/sidemash/util/String.js'
+    'app/vendors/utils/String.js',
+    'app/vendors/charts.js/Chart.min.js'//,
+    // 'app/vendors/d3/d3.v3.min.js',
+    // 'app/vendors/d3/d3-timeline.js'
   ]
 }
 

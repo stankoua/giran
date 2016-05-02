@@ -8,21 +8,22 @@ import play.api.http.ContentTypes
 import play.api.libs.json.Json
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.ws.WSClient
-import play.api.mvc.AcceptExtractors //.Accepts
+import play.api.mvc.AcceptExtractors
 import akka.actor.ActorSystem
 import akka.pattern.ask
 import akka.util.Timeout
 import common.Client
 import models.Repo
 import services.RepoService
-import services.RepoService.{GetRepo, RepoResult, repoResultWrites, GetRepoCommitters, RepoCommittersResults}
+import services.RepoService.{GetRepo, RepoResult, repoResultWrites, GetRepoCommitters, RepoCommittersResults, GetCommits, CommitsResults}
 import models.User.userWrites
+import models.Commit.commitWrites
 import scala.concurrent.Future
 
 @Singleton
 class RepoController @Inject()(system: ActorSystem, ws: WSClient) extends Controller with Client {
 
-  implicit val timeout = Timeout(120 seconds)
+  implicit val timeout = Timeout(30 seconds)
 
   val repoService = system.actorOf(RepoService.props(ws), "repo-service")
 
@@ -48,8 +49,10 @@ class RepoController @Inject()(system: ActorSystem, ws: WSClient) extends Contro
     }
   }
 
-  def getLastCommits(owner: String, name: String, max: Int) = Action.async {
-    (repoService ? GetLastCommits(nextId(), owner, name, count)).mapTo[].map {}
+  def getCommits(owner: String, name: String, page: Int) = Action.async {
+    (repoService ? GetCommits(nextId(), owner, name, page)).mapTo[CommitsResults].map { results =>
+      Ok(Json.toJson(results.commits)).as(ContentTypes.JSON)
+    }
   }
 
 }

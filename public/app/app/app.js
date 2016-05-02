@@ -11,7 +11,6 @@ import {createStore, applyMiddleware} from 'redux'
 import reducers from './reducers'
 import './tags/router.tag.js'
 
-
 riot.tag('raw', '<span></span>', function(opts) {
     this.root.innerHTML = opts.content;
 });
@@ -28,7 +27,6 @@ riot.tag('raw', '<span></span>', function(opts) {
 //        router = riot.mount('router')[0];
 //        riot.route.start(true);
 //    });
-
 const logger = createLogger()
 const finalCreateStore = applyMiddleware(thunk, logger) (createStore)
 const store = finalCreateStore(reducers)

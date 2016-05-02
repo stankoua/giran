@@ -1,4 +1,6 @@
 require('./repo-committers.tag')
+require('./repo-commits.tag')
+require('./repo-contribution.tag')
 <repo-view>
 
     <div class="container-fluid">
@@ -13,9 +15,19 @@ require('./repo-committers.tag')
                     <span class="label label-default">{repo.forks} forks</span>
                     <span class="label label-success">{repo.watchers} watchers</span>
                     <span class="label label-danger">{repo.openIssues} open issues</span>
+                    <select class="" id="nbCommits" onchange={onChangeNbCommits}>
+                        <option>30</option>
+                        <option>60</option>
+                        <option>90</option>
+                        <option>100</option>
+                    </select>
                 </div>
 
-                <repo-committers committers={repo.committers}/>
+                <!-- <repo-committers committers={repo.committers}/> -->
+
+                <!--<repo-commits commits={repo.commits}/>-->
+
+                <repo-contribution commits={repo.commits}/>
 
                 <!--<div id="repo-tabs">
                     <ul class="nav nav-pills">
@@ -44,13 +56,21 @@ require('./repo-committers.tag')
         // import repoDataResults from '../actions/repo'
         let fetchCommitters = require('../actions/repo').fetchCommitters
         let loadRepo = require('../actions/repo').loadRepo
+        let fetchCommits = require('../actions/repo').fetchCommits
         const {dispatch} = this.opts.store
         this.repo = opts.store.getState().repo
         const owner = this.opts.owner
         const name = this.opts.name
+        this.onChangeNbCommits = () => {
+            let nb = document.getElementById("nbCommits").value
+            console.log(nb);
+            dispatch(fetchCommits(owner, name, nb))
+        }
         this.on('mount', () => {
+            let nb = document.getElementById("nbCommits").value
             dispatch(loadRepo(owner, name))
             dispatch(fetchCommitters(owner, name))
+            dispatch(fetchCommits(owner, name, 30))
         })
         let unsubscribe = this.opts.store.subscribe(() => {
             this.update({

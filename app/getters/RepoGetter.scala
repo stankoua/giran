@@ -6,6 +6,7 @@ import akka.event.LoggingReceive
 import akka.pattern.pipe
 import models.Repo
 import scala.concurrent.duration._
+// import play.api.libs.ws.WSAuthScheme.BASIC
 
 
 object RepoGetter {

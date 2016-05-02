@@ -6,6 +6,7 @@ import play.api.libs.ws.{WSClient, WSRequest}
 import akka.actor.{Props, Actor, ActorLogging}
 import akka.event.LoggingReceive
 import akka.pattern.pipe
+// import play.api.libs.ws.WSAuthScheme.BASIC
 
 
 import models.{SearchResults, Repo}
