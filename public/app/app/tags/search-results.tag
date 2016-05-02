@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <p if={!canDisplayResults}>Aucun résultat</p>
+                <p class="text-center" if={!canDisplayResults}>Aucun résultat</p>
                 <ul class="list-group" if={canDisplayResults}>
                     <li class="list-group-item" each="{item in opts.results.items}">
                         <a href="/repos/{item.fullName}">{item.fullName}</a>

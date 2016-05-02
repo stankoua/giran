@@ -1,4 +1,5 @@
-import getAndDispatch from '../common/fetcher'
+const getAndDispatch = require('../common/fetcher').getAndDispatch;
+
 
 export const SEARCH_DATA = 'SEARCH_DATA'
 
@@ -10,5 +11,5 @@ export function searchDataResults(data) {
 }
 
 export function searchFor(searchTerm, page) {
-  return getAndDispatch(dispatch, '/search?q=' + searchTerm + '&page=' + page, searchDataResults)
+  return getAndDispatch(`/search?q=${searchTerm}&page=${page}`, searchDataResults)
 }

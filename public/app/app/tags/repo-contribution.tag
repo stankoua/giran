@@ -1,6 +1,7 @@
 require('./rg-chart.js')
 <repo-contribution>
 
+    <h2>Repo Contributions</h2>
     <rg-chart chart="{ linechart }"></rg-chart>
 
     <script type="es6">

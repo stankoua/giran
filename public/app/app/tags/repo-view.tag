@@ -15,7 +15,7 @@ require('./repo-contribution.tag')
                     <span class="label label-default">{repo.forks} forks</span>
                     <span class="label label-success">{repo.watchers} watchers</span>
                     <span class="label label-danger">{repo.openIssues} open issues</span>
-                    <select class="" id="nbCommits" onchange={onChangeNbCommits}>
+                    <select id="nbCommits" onchange={onChangeNbCommits}>
                         <option>30</option>
                         <option>60</option>
                         <option>90</option>
@@ -23,30 +23,21 @@ require('./repo-contribution.tag')
                     </select>
                 </div>
 
-                <!-- <repo-committers committers={repo.committers}/> -->
+                <div id="repo-tabs">
+                    <select id="sections" class="pull-right" onchange={onChangeSection}>
+                        <option value="100">Committers</option>
+                        <option value="010">Contributions</option>
+                        <option value="001">Commits</option>
+                    </select>
 
-                <!--<repo-commits commits={repo.commits}/>-->
+                    <div id="section-content">
+                        <repo-committers if={sections._1} committers={repo.committers}/>
 
-                <repo-contribution commits={repo.commits}/>
+                        <repo-contribution if={sections._2} commits={repo.commits}/>
 
-                <!--<div id="repo-tabs">
-                    <ul class="nav nav-pills">
-                        <li role="presentation" class="active"><a href="#">Home</a></li>
-                        <li role="presentation"><a href="#">Profile</a></li>
-                        <li role="presentation"><a href="#">Messages</a></li>
-                    </ul>
-                    <div id="myTabContent" class="tab-content">
-                        <div class="tab-pane fade active in" id="home">
-                            <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
-                        </div>
-                        <div class="tab-pane fade" id="profile">
-                            <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
-                        </div>
-                        <div class="tab-pane fade" id="messages">
-                            <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</p>
-                        </div>
+                        <repo-commits if={sections._3} commits={repo.commits}/>
                     </div>
-                </div>-->
+                </div>
 
             </div>
         </div>
@@ -61,6 +52,26 @@ require('./repo-contribution.tag')
         this.repo = opts.store.getState().repo
         const owner = this.opts.owner
         const name = this.opts.name
+        this.sections = {
+            _1 : true,
+            _2 : false,
+            _3 : false
+        }
+        this.onChangeSection = () => {
+            let sections = document.getElementById("sections").value
+            sections = sections.split('').map((v, i) => {
+                    let res = {}
+                    let index  = '_' + i
+                    res[index] = (v == 1) ? true : false
+                    return res
+                }).reduce((acc, cur) => {
+                    return Object.assign({}, acc, cur)
+                }, {})
+            // console.log(sections);
+            this.update({
+                sections: sections
+            })
+        }
         this.onChangeNbCommits = () => {
             let nb = document.getElementById("nbCommits").value
             console.log(nb);
@@ -71,6 +82,9 @@ require('./repo-contribution.tag')
             dispatch(loadRepo(owner, name))
             dispatch(fetchCommitters(owner, name))
             dispatch(fetchCommits(owner, name, 30))
+        })
+        this.on('update', () => {
+            console.log(this.sections);
         })
         let unsubscribe = this.opts.store.subscribe(() => {
             this.update({
